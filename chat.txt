@@ -1,1 +1,1 @@
-s: qwe,s: yes,qw: how are you,qw: how was your day,b: hello all,
+s: qwe,s: yes,qw: how are you,qw: how was your day,b: hello all,abhi: how are you all,

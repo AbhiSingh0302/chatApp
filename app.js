@@ -17,7 +17,6 @@ app.use('/login',(req,res,next)=>{
 app.use('/chat',(req,res,next)=>{
     let chat = req.body;
     Object.keys(chat).forEach(val=>{
-        console.log(chat[val]);
         fs.appendFile("chat.txt",user+": "+chat[val]+",",err => {
             if(err){
                 throw err;
@@ -31,13 +30,10 @@ let user;
 app.use('/',(req,res,next)=>{
     let userchat = req.body;
     Object.keys(userchat).forEach(val=>{
-        console.log(userchat[val]);
         user = userchat[val];
     })
     fs.readFile('chat.txt', 'utf8', function(err, data){
-        console.log(data);
         if(err){
-            console.log(err);
             return err;
         }
         return res.send(`<p>${data}</p><form action="/chat" method="POST"><input type="text" name="chat" placeholder="type something..."><button>Send</button></form>`)
