@@ -18,14 +18,7 @@ app.use('/chat',(req,res,next)=>{
     let chat = req.body;
     Object.keys(chat).forEach(val=>{
         console.log(chat[val]);
-        // fs.readFile('chat.txt', 'utf8', function(err, data){
-        //     if(err){
-        //         console.log(err);
-        //         return err;
-        //     }
-        //     fs.writeFileSync("chat.txt",data+chat[val]);
-        // });
-        fs.appendFile("chat.txt",chat[val]+",",err => {
+        fs.appendFile("chat.txt",user+": "+chat[val]+",",err => {
             if(err){
                 throw err;
             }
@@ -34,22 +27,21 @@ app.use('/chat',(req,res,next)=>{
     })
     res.redirect("/");
 })
-
+let user;
 app.use('/',(req,res,next)=>{
-    // fs.writeFileSync("chat.txt",`${localStorage.getItem("username")}: `)
-    // console.log(localStorage.getItem("username"));
-    let chat = req.body;
-    Object.keys(chat).forEach(val=>{
-        // fs.writeFileSync("chat.txt",chat[val]+": ");
-        fs.appendFile("chat.txt",chat[val]+": ",err => {
-            if(err){
-                throw err;
-            }
-            console.log("updated");
-        });
-        console.log(chat[val]);
+    let userchat = req.body;
+    Object.keys(userchat).forEach(val=>{
+        console.log(userchat[val]);
+        user = userchat[val];
     })
-    res.send('<form action="/chat" method="POST"><input type="text" name="chat" placeholder="type something..."><button>Send</button></form>')
+    fs.readFile('chat.txt', 'utf8', function(err, data){
+        console.log(data);
+        if(err){
+            console.log(err);
+            return err;
+        }
+        return res.send(`<p>${data}</p><form action="/chat" method="POST"><input type="text" name="chat" placeholder="type something..."><button>Send</button></form>`)
+    });
 })
 
 app.listen(3000);
