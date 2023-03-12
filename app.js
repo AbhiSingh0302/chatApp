@@ -17,10 +17,13 @@ app.use('/login',(req,res,next)=>{
 app.use('/chat',(req,res,next)=>{
     let chat = req.body;
     Object.keys(chat).forEach(val=>{
-        fs.writeFileSync("chat.txt",chat[val]);
         console.log(chat[val]);
         fs.readFile('chat.txt', 'utf8', function(err, data){
-            console.log(data);
+            if(err){
+                console.log(err);
+                return err;
+            }
+            fs.writeFileSync("chat.txt",data+chat[val]);
         });
     })
     res.redirect("/");
@@ -31,7 +34,7 @@ app.use('/',(req,res,next)=>{
     // console.log(localStorage.getItem("username"));
     let chat = req.body;
     Object.keys(chat).forEach(val=>{
-        fs.writeFileSync("chat.txt",chat[val]);
+        fs.writeFileSync("chat.txt",chat[val]+": ");
         console.log(chat[val]);
     })
     res.send('<form action="/chat" method="POST"><input type="text" name="chat" placeholder="type something..."><button>Send</button></form>')
